@@ -1,0 +1,149 @@
+
+News API
+========
+https://newsapi.org/docs
+
+Authorization
+-------------
+You can attach your API key to a request in one of three ways:
+    Via the apiKey querystring parameter.
+    Via the X-Api-Key HTTP header.
+    Via the Authorization HTTP header. Bearer optional, do not base 64 encode.
+We strongly recommend the either of latter 2 so that your API key isn't visible to others in logs or request sniffing.
+
+Endpoints
+---------
+https://newsapi.org/
+
+    Top headlines /v2/top-headlines - returns breaking news headlines for a country and category, or currently running on a single or multiple sources. This is perfect for use with news tickers or anywhere you want to display live up-to-date news headlines and images.
+        e.g. https://newsapi.org/v2/top-headlines?country=gb&api_key=APIKey-NewsAPI
+
+    Everything /v2/everything - we index every recent news and blog article published by over 50,000 different sources large and small, and you can search through them with this endpoint. This endpoint is better suited for news analysis and article discovery, but can be used to retrieve articles for display too.
+        e.g. https://newsapi.org/v2/everything?q=tesla&api_key=APIKey-NewsAPI
+
+    We also have a minor endpoint that can be used to retrieve a small subset of the publishers we index from:
+    Sources /v2/sources - returns information (including name, description, and category) about the most notable sources we index. This list could be piped directly through to your users when showing them some of the options available.
+        e.g. https://newsapi.org/v2/sources?api_key=APIKey-NewsAPI
+
+Top headlines
+-------------
+country options:
+    ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za
+
+category options:
+    business entertainment general health science sports technology
+
+sources:
+    A comma-seperated string of identifiers (maximum 20). Use the /sources endpoint to locate these programmatically.  Note: you can't mix this param with the country or category params.
+
+q:
+    Keywords or a phrase to search for.
+
+page_size:
+    Results per request. 20 is the default, 100 is the maximum.
+
+page:
+    Page through the results if the total results found is greater than the page size.
+
+Everything
+----------
+q:
+    Keywords or phrases to search for in the article title and body.
+    Advanced search is supported here:
+        Surround phrases with quotes (") for exact match.
+        Prepend words or phrases that must appear with a + symbol. Eg: +bitcoin
+        Prepend words that must not appear with a - symbol. Eg: -bitcoin
+        Alternatively you can use the AND / OR / NOT keywords, and optionally group these with parenthesis. Eg: crypto AND (ethereum OR litecoin) NOT bitcoin.
+    NOTE: The complete value for q must be URL-encoded.
+
+
+qintitle:
+    Keywords or phrases to search for in the article title only.
+    Advanced search is supported as above.
+
+sources:
+    As above.
+
+domains:
+    A comma-separated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com)
+
+exclude_domains:
+    See domains.
+
+from_param:
+    A date and optional time for the oldest article allowed. This should be in ISO 8601 format (e.g. 2021-01-07 or 2021-01-07T18:06:46)
+
+to:
+    A date and optional time for the newest article allowed.
+
+language:
+    ar de en es fr he it nl no pt ru se ud zh
+    Default: all languages returned.
+
+sort_by:
+    relevancy = articles more closely related to q come first.
+    popularity = articles from popular sources and publishers come first.
+    publishedAt = (default) newest articles come first.
+
+page_size:
+    As above.
+
+page:
+    As above.
+
+Sources
+-------
+category:
+language:
+country:
+    As above.
+
+HTTP status codes
+-----------------
+200 - OK. The request was executed successfully.
+400 - Bad Request. The request was unacceptable, often due to a missing or mis-configured parameter.
+401 - Unauthorized. Your API key was missing from the request, or wasn't correct.
+429 - Too Many Requests. You made too many requests within a window of time and have been rate limited. Back off for a while.
+500 - Server Error. Something went wrong on our side.
+
+Client Libraries
+----------------
+We have libraries for the following languages:
+    Node.js
+    Ruby
+    Python
+    PHP coming soon
+    Java coming soon
+    C#
+
+Python client library
+---------------------
+
+Installation:
+$ pip install newsapi-python
+
+Usage:
+from newsapi import NewsApiClient
+
+# Init
+newsapi = NewsApiClient(api_key=APIKey-NewsAPI)
+
+# /v2/top-headlines
+top_headlines = newsapi.get_top_headlines(q='bitcoin',
+                                          sources='bbc-news,the-verge',
+                                          category='business',
+                                          language='en',
+                                          country='us')
+
+# /v2/everything
+all_articles = newsapi.get_everything(q='bitcoin',
+                                      sources='bbc-news,the-verge',
+                                      domains='bbc.co.uk,techcrunch.com',
+                                      from_param='2017-12-01',
+                                      to='2017-12-12',
+                                      language='en',
+                                      sort_by='relevancy',
+                                      page=2)
+
+# /v2/sources
+sources = newsapi.get_sources()
