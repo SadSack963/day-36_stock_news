@@ -1,72 +1,82 @@
 from newsapi import NewsApiClient
 import requests
 import os
-import json
+import save_data
 
 
-API_KEY_NEWSAPI = os.environ.get("APIKey-NewsAPI")
+API_KEY = os.environ.get("APIKey-NewsAPI")
 
 
-def newsapi_client():
-    # Using NewsApiClient object
-    # ==========================
+def newsapi_client(stock, company):
+    """
+    Using NewsApiClient object -
+    Note that NewsApiClient uses underscores in parameter names:
+    exclude_domains, sort_by, page_size, api_key
+    """
 
     # Init
-    newsapi = NewsApiClient(api_key=API_KEY_NEWSAPI)
+    newsapi = NewsApiClient(api_key=API_KEY)
 
     # /v2/top-headlines
-    top_headlines = newsapi.get_top_headlines(q='bitcoin',
+    top_headlines = newsapi.get_top_headlines(q=stock,
                                               sources='bbc-news,the-verge',
                                               language='en')
-    save_data_json(top_headlines, "top_headlines")
+    save_data.save_json(top_headlines, "top_headlines")
 
     # /v2/everything
     # TODO: Get current date and retrieve news from previous 2 days
-    all_articles = newsapi.get_everything(q='tesla',
-                                          from_param='2021-01-01',
-                                          to='2021-01-07',
-                                          language='en',
-                                          sort_by='relevancy',
-                                          page_size=3,
-                                          page=1)
-    save_data_json(all_articles, "everything")
+    everything = newsapi.get_everything(q=company,
+                                        from_param='2021-01-01',
+                                        to='2021-01-07',
+                                        language='en',
+                                        sort_by='relevancy',
+                                        page_size=3,
+                                        page=1)
+    save_data.save_json(everything, "everything")
 
     # /v2/sources
     sources = newsapi.get_sources(language="en")
-    save_data_json(sources, "sources")
+    save_data.save_json(sources, "sources")
 
 
-def newsapi_requests():
-    # Using Python requests module
-    # ============================
+def newsapi_requests(stock, company):
+    """
+    Using Python requests module -
+    Note that http requests uses camelCase in parameter names:
+    excludeDomains, from_param, sortBy, pageSize, apiKey
+    """
 
-    base_url_newsapi = "https://newsapi.org/"
+    base_url = "https://newsapi.org/"
 
-    endpoint_url_newsapi_top_headlines = "v2/top-headlines"
-    endpoint_url_newsapi_everything = "v2/everything"
-    endpoint_url_newsapi_sources = "v2/sources"
+    endpoint_top_headlines = "v2/top-headlines"
+    parameters_top_headlines = {"q": stock,
+                                "sources": 'bbc-news,the-verge',
+                                "language": 'en',
+                                "apiKey": API_KEY,
+                                }
 
-    url = base_url_newsapi + endpoint_url_newsapi_everything
+    # TODO: Get current date and retrieve news from previous 2 days
+    endpoint_everything = "v2/everything"
+    parameters_everything = {"q": company,
+                             "from": '2021-01-01',
+                             "to": '2021-01-07',
+                             "language": 'en',
+                             "sortBy": 'relevancy',
+                             "pageSize": 3,
+                             "page": 1,
+                             "apiKey": API_KEY,
+                             }
 
-    parameters_newsapi = {"api_key": API_KEY_NEWSAPI,
-                          "q": 'tesla',
-                          "from_param": '2021-01-01',
-                          "to": '2021-01-07',
-                          "language": 'en',
-                          "sort_by": 'relevancy',
-                          "page_size": 3,
-                          "page": 1,
+    endpoint_sources = "v2/sources"
+    parameters_sources = {"language": 'en',
+                          "apiKey": API_KEY,
                           }
 
-    response = requests.get(url=url, params=parameters_newsapi, timeout=1)
+    url = base_url + endpoint_everything
+
+    response = requests.get(url=url, params=parameters_everything, timeout=1)
     response.raise_for_status()
 
-    all_articles = response.json()
-    save_data_json(all_articles, "sources")
+    everything = response.json()
+    save_data.save_json(everything, "everything")
 
-
-def save_data_json(data, filename):
-    # Save data to JSON file
-    file_path = "./news/" + filename + ".json"
-    with open(file_path, mode="w") as file:
-        json.dump(data, fp=file)

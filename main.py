@@ -1,15 +1,11 @@
 import os
-
+import alpha_vantage
 import newsapi_client
 
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
-STOCK_ENDPOINT = "https://www.alphavantage.co/query"
-NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
-
-API_KEY_NEWSAPI = os.environ.get("APIKey-NewsAPI")
 TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 
@@ -19,12 +15,13 @@ TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 #     Find the positive difference between the two prices. e.g. 40 - 20 = -20, but the positive difference is 20.
 #   HINT 2: Work out the value of 5% of yesterday's closing stock price.
 
+# alpha_vantage.alpha_vantage_requests(STOCK)
 
 # TODO: STEP 2: Use https://newsapi.org/docs/endpoints/everything
 #   Instead of printing ("Get News"), actually fetch the first 3 articles for the COMPANY_NAME.
 #   HINT 1: Think about using the Python Slice Operator
 
-newsapi_client.newsapi_requests()
+newsapi_client.newsapi_requests(STOCK, COMPANY_NAME)
 
 
 # TODO: STEP 3: Use twilio.com/docs/sms/quickstart/python
