@@ -1,7 +1,7 @@
 import requests
 import os
 import save_data
-
+import json
 
 API_KEY = os.environ.get("APIKey-AlphaVantage")
 
@@ -24,3 +24,5 @@ def alpha_vantage_requests(stock):
     daily = response.json()
     save_data.save_json(daily, "daily")
 
+    last_avail = daily["Meta Data"]["3. Last Refreshed"]
+    print(last_avail)

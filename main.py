@@ -1,6 +1,8 @@
 import os
+import datetime
 import alpha_vantage
 import newsapi_client
+import dataframe
 
 
 STOCK = "TSLA"
@@ -8,6 +10,10 @@ COMPANY_NAME = "Tesla Inc"
 
 TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+
+
+today = datetime.datetime.now().date()
+print(today)
 
 # TODO: STEP 1: Use Use https://www.alphavantage.co/documentation/#daily
 #   When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
@@ -17,11 +23,14 @@ TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 
 # alpha_vantage.alpha_vantage_requests(STOCK)
 
+dataframe.plot_data(STOCK, COMPANY_NAME)
+
+
 # TODO: STEP 2: Use https://newsapi.org/docs/endpoints/everything
 #   Instead of printing ("Get News"), actually fetch the first 3 articles for the COMPANY_NAME.
 #   HINT 1: Think about using the Python Slice Operator
 
-newsapi_client.newsapi_requests(STOCK, COMPANY_NAME)
+# newsapi_client.newsapi_requests(STOCK, COMPANY_NAME)
 
 
 # TODO: STEP 3: Use twilio.com/docs/sms/quickstart/python
