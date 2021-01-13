@@ -2,7 +2,7 @@ import os
 import datetime
 import alpha_vantage_get_prices
 import newsapi_get_news
-import dataframe
+import graph
 import send_email
 import json
 import time
@@ -10,49 +10,53 @@ import time
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
-TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+# TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
+# TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 
 
-# TODO: STEP 1: Use Use https://www.alphavantage.co/documentation/#daily
-#   When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-#   HINT 1: Get the closing price for yesterday and the day before yesterday.
-#     Find the positive difference between the two prices. e.g. 40 - 20 = -20, but the positive difference is 20.
-#   HINT 2: Work out the value of 5% of yesterday's closing stock price.
-
+# API Document: https://www.alphavantage.co/documentation/#daily
+# Retrieve daily stock prices
 price_change = alpha_vantage_get_prices.alpha_vantage_requests(STOCK)
-print(price_change)
+# print(price_change)
 
-# dataframe.plot_data(STOCK, COMPANY_NAME)
+# Generate a boxplot of the stock prices (Open, High, Low, Close)
+graph.plot_data(STOCK, COMPANY_NAME)
+# print("boxplot done")
 
-
-# TODO: STEP 2: Use https://newsapi.org/docs/endpoints/everything
-#   Instead of printing ("Get News"), actually fetch the first 3 articles for the COMPANY_NAME.
-#   HINT 1: Think about using the Python Slice Operator
-
-if price_change[2] > 4.0:
+# API Document: https://newsapi.org/docs/endpoints/everything
+# Check if stock price increases/decreases by 4% between yesterday and the day before yesterday then
+if price_change[2] >= 4.0:
+    # Get the top 3 news articles
     # newsapi_client.newsapi_client(STOCK, COMPANY_NAME)
     newsapi_get_news.newsapi_requests(STOCK, COMPANY_NAME)
+    # print("news retrieved")
 
-
-# TODO: STEP 3: Use twilio.com/docs/sms/quickstart/python
-#   Send a separate message with each article's title and description to your phone number.
-#   HINT 1: Consider using a List Comprehension.
-
+    # Send an email for each news article
     with open("./data/everything.json") as file:
         everything = json.load(fp=file)
 
     for index in range(len(everything["articles"])):
         title = everything["articles"][index]["title"]
         description = everything["articles"][index]["description"]
+        if price_change[1] > 0:
+            indicator = "🔺"
+        else:
+            indicator = "🔻"
+        message = f"{price_change[0]}: " \
+                  f"{indicator} " \
+                  f"{price_change[1]:.2f} points = " \
+                  f"{price_change[2]:.1f}%\n" \
+                  f"{description}"
+        # print(message)
 
         send_email.send_mail(
             STOCK,
             title,
-            f"{price_change[0]}: {price_change[1]:.2f} points = {price_change[2]:.1f}%\n{description}"
+            message
         )
-        time.sleep(5)
+        # print("email sent")
 
+# TODO: Optional: Use twilio.com/docs/sms/quickstart/python
 # TODO: Optional: Format the SMS message like this:
 """
 TSLA: 🔺2%
