@@ -2,6 +2,7 @@ from newsapi import NewsApiClient
 import requests
 import os
 import save_data
+import datetime
 
 
 API_KEY = os.environ.get("APIKey-NewsAPI")
@@ -24,7 +25,6 @@ def newsapi_client(stock, company):
     save_data.save_json(top_headlines, "top_headlines")
 
     # /v2/everything
-    # TODO: Get current date and retrieve news from previous 2 days
     everything = newsapi.get_everything(q=company,
                                         from_param='2021-01-01',
                                         to='2021-01-07',
@@ -50,16 +50,21 @@ def newsapi_requests(stock, company):
 
     endpoint_top_headlines = "v2/top-headlines"
     parameters_top_headlines = {"q": stock,
-                                "sources": 'bbc-news,the-verge',
+                                "sources": 'bbc-news,reuters',
                                 "language": 'en',
                                 "apiKey": API_KEY,
                                 }
 
-    # TODO: Get current date and retrieve news from previous 2 days
+    # Get current date and retrieve news from previous 2 days
+    to_date = datetime.datetime.now().date()
+    print(f"to_date {to_date}")
+    from_date = to_date - datetime.timedelta(days=2)
+    print(f"from_date {from_date}")
+
     endpoint_everything = "v2/everything"
     parameters_everything = {"q": company,
-                             "from": '2021-01-01',
-                             "to": '2021-01-07',
+                             "from": from_date,
+                             "to": to_date,
                              "language": 'en',
                              "sortBy": 'relevancy',
                              "pageSize": 3,
@@ -79,4 +84,3 @@ def newsapi_requests(stock, company):
 
     everything = response.json()
     save_data.save_json(everything, "everything")
-

@@ -2,12 +2,16 @@ import requests
 import os
 import save_data
 import json
+import json
 
 API_KEY = os.environ.get("APIKey-AlphaVantage")
 
 
 def alpha_vantage_requests(stock):
-
+    """
+    Retrieve daily stock values.
+    Return Last Refreshed Date, change in price, and change percentage.
+    """
     base_url = "https://www.alphavantage.co/"
     endpoint = "query"
     parameters = {
@@ -24,5 +28,14 @@ def alpha_vantage_requests(stock):
     daily = response.json()
     save_data.save_json(daily, "daily")
 
+    # with open("./data/daily.json") as file:
+    #     daily = json.load(fp=file)
+
     last_avail = daily["Meta Data"]["3. Last Refreshed"]
-    print(last_avail)
+
+    list_daily = list(daily["Time Series (Daily)"].values())
+    delta = float(list_daily[0]['4. close']) - float(list_daily[1]['4. close'])
+    delta_percent = delta * 100 / float(list_daily[0]['4. close'])
+
+    return last_avail, delta, delta_percent
+

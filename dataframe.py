@@ -19,7 +19,7 @@ def plot_data(stock, company_name):
     #
     # """
     #
-    # title = stock + ": " + company_name
+    # title = stock + ": " + company_name + " Closing Price"
     # data_frame.plot(kind="bar", y="4. close", title=title)
     # plt.show()
 
@@ -38,5 +38,5 @@ def plot_data(stock, company_name):
     print(data_frame)
 
     title = stock + ": " + company_name
-    data_frame.boxplot()
+    data_frame.boxplot(fontsize=6, rot=90)
     plt.show()
