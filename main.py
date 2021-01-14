@@ -44,20 +44,19 @@ if abs(price_change[2]) >= 4.0:
             indicator = "🔺"
         else:
             indicator = "🔻"
+        subject = f"{STOCK}:{indicator} {price_change[2]:.1f}% {title}"
         message = f"{price_change[0]}: " \
+                  f"{STOCK} - " \
+                  f"{COMPANY_NAME}. " \
                   f"{indicator} " \
                   f"{price_change[1]:.2f} points = " \
                   f"{price_change[2]:.1f}%\n" \
-                  f"{description}\n" \
-                  f"{url}\n" \
-                  f"{urlToImage}"
+                  f"{description}\n\n" \
+                  f"{url}\n"
         # print(message)
 
         send_email.send_mail(
-            STOCK,
-            title,
-            indicator,
-            price_change[2],
+            subject,
             message
         )
         # print("email sent")

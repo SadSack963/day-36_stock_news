@@ -57,9 +57,9 @@ def newsapi_requests(stock, company):
 
     # Get current date and retrieve news from previous 2 days
     to_date = datetime.datetime.now().date()
-    print(f"to_date {to_date}")
+    # print(f"to_date {to_date}")
     from_date = to_date - datetime.timedelta(days=2)
-    print(f"from_date {from_date}")
+    # print(f"from_date {from_date}")
 
     endpoint_everything = "v2/everything"
     parameters_everything = {"q": company,

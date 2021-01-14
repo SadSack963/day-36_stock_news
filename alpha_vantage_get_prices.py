@@ -21,15 +21,15 @@ def alpha_vantage_requests(stock):
 
     url = base_url + endpoint
 
-    # response = requests.get(url=url, params=parameters, timeout=1)
-    # response.raise_for_status()
-    #
-    # daily = response.json()
-    # save_data.save_json(daily, "daily")
+    response = requests.get(url=url, params=parameters, timeout=1)
+    response.raise_for_status()
+
+    daily = response.json()
+    save_data.save_json(daily, "daily")
 
     # Use this when file already exists and we don't want to request the data again
-    with open("./data/daily.json") as file:
-        daily = json.load(fp=file)
+    # with open("./data/daily.json") as file:
+    #     daily = json.load(fp=file)
 
     last_avail = daily["Meta Data"]["3. Last Refreshed"]
 

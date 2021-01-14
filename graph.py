@@ -42,7 +42,7 @@ def plot_data(stock, company_name):
 
     # Sort columns ascending
     data_frame = data_frame.sort_index(axis="columns")
-    print(data_frame)
+    # print(data_frame)
 
     title = stock + ": " + company_name
     data_frame.boxplot(fontsize=6, rot=45)
