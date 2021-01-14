@@ -17,7 +17,7 @@ YAHOO_PASSWORD = os.environ.get("SMTP_YAHOO_PASSWORD")
 YAHOO_RECIPIENT = os.environ.get("SMTP_YAHOO_RECIPIENT")
 
 
-def send_mail(stock, headline, description):
+def send_mail(stock, headline, indicator, change_percent, description):
     # SEND FROM YAHOO ACCOUNT
 
     # Compile email headers
@@ -25,7 +25,7 @@ def send_mail(stock, headline, description):
     message = MIMEMultipart()
     message["From"] = f"\"{YAHOO_SENDER}\" <{YAHOO_EMAIL}>"
     message["To"] = f"{YAHOO_RECIPIENT}"
-    message["Subject"] = Header(s=f"{stock}: {headline}", charset="utf-8")
+    message["Subject"] = Header(s=f"{stock}:{indicator} {change_percent:.1f}% {headline}", charset="utf-8")
     # message["Bcc"] = f"{YAHOO_RECIPIENT}"
 
     # Add the text message

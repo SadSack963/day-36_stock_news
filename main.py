@@ -56,6 +56,8 @@ if abs(price_change[2]) >= 4.0:
         send_email.send_mail(
             STOCK,
             title,
+            indicator,
+            price_change[2],
             message
         )
         # print("email sent")
