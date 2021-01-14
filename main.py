@@ -6,6 +6,7 @@ import json
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
+THRESHOLD = 4.0
 
 # TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 # TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
@@ -21,8 +22,9 @@ graph.plot_data(STOCK, COMPANY_NAME)
 # print("boxplot done")
 
 # API Document: https://newsapi.org/docs/endpoints/everything
-# Check if stock price increases/decreases by 4% between yesterday and the day before yesterday then
-if abs(price_change[2]) >= 0.1:
+# If the closing stock price increases or decreases by a given threshold
+# between the last two days, then retrieve the top 3 news articles and send emails.
+if abs(price_change[2]) >= THRESHOLD:
     # Get the top 3 news articles
     # newsapi_client.newsapi_client(STOCK, COMPANY_NAME)
     newsapi_get_news.newsapi_requests(STOCK, COMPANY_NAME)
