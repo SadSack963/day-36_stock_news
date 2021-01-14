@@ -1,11 +1,8 @@
-import os
-import datetime
 import alpha_vantage_get_prices
 import newsapi_get_news
 import graph
 import send_email
 import json
-import time
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
@@ -39,7 +36,7 @@ if abs(price_change[2]) >= 4.0:
         title = everything["articles"][index]["title"]
         description = everything["articles"][index]["description"]
         url = everything["articles"][index]["url"]
-        urlToImage = everything["articles"][index]["urlToImage"]
+        # urlToImage = everything["articles"][index]["urlToImage"]
         if price_change[1] > 0:
             indicator = "🔺"
         else:
