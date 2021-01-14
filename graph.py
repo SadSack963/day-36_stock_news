@@ -51,5 +51,5 @@ def plot_data(stock, company_name):
     plt.xticks(x_ticks)
     plt.title(title)
     # Save as PNG
-    plt.savefig("./data/boxplot.png", format="png")
+    plt.savefig("./images/boxplot.png", format="png")
     # plt.show()

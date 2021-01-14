@@ -33,7 +33,7 @@ def send_mail(header, description):
     message.attach(msg_text)
 
     # Add an image as attachment
-    with open('./data/boxplot.png', 'rb') as file:
+    with open('./images/boxplot.png', 'rb') as file:
         img = MIMEImage(file.read())
         img.add_header('Content-Disposition', 'attachment', filename="boxplot.png")
         message.attach(img)

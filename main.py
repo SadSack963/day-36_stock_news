@@ -22,7 +22,7 @@ graph.plot_data(STOCK, COMPANY_NAME)
 
 # API Document: https://newsapi.org/docs/endpoints/everything
 # Check if stock price increases/decreases by 4% between yesterday and the day before yesterday then
-if abs(price_change[2]) >= 4.0:
+if abs(price_change[2]) >= 0.1:
     # Get the top 3 news articles
     # newsapi_client.newsapi_client(STOCK, COMPANY_NAME)
     newsapi_get_news.newsapi_requests(STOCK, COMPANY_NAME)
