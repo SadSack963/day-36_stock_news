@@ -42,10 +42,6 @@ def send_mail(stock, headline, indicator, change_percent, description):
 
     # Send the email
     with smtplib.SMTP(host="smtp.mail.yahoo.co.uk", port=587) as connection:
-        # Added ehlo() because the server seems to reject with Error 421 sometimes
-        # It remains to be seen if this actually fixes the error
-        # Should not be necessary - ehlo() is implicitly called by sendmail() when necessary
-        connection.ehlo()
         # Secure the connection
         connection.starttls()
         connection.login(user=YAHOO_USERNAME, password=YAHOO_PASSWORD)
