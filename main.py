@@ -38,6 +38,8 @@ if abs(price_change[2]) >= 4.0:
     for index in range(len(everything["articles"])):
         title = everything["articles"][index]["title"]
         description = everything["articles"][index]["description"]
+        url = everything["articles"][index]["url"]
+        urlToImage = everything["articles"][index]["urlToImage"]
         if price_change[1] > 0:
             indicator = "🔺"
         else:
@@ -46,7 +48,9 @@ if abs(price_change[2]) >= 4.0:
                   f"{indicator} " \
                   f"{price_change[1]:.2f} points = " \
                   f"{price_change[2]:.1f}%\n" \
-                  f"{description}"
+                  f"{description}\n" \
+                  f"{url}\n" \
+                  f"{urlToImage}"
         # print(message)
 
         send_email.send_mail(
