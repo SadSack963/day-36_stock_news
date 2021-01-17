@@ -3,13 +3,16 @@ import newsapi_get_news
 import graph
 import send_email
 import json
+import os
+from dotenv import load_dotenv
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 THRESHOLD = 4.0
 
-# TWILIO_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
-# TWILIO_SID = os.environ.get("TWILIO_ACCOUNT_SID")
+load_dotenv("E:/Python/EnvironmentVariables/.env")
+TWILIO_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_SID = os.getenv("TWILIO_ACCOUNT_SID")
 
 
 # API Document: https://www.alphavantage.co/documentation/#daily

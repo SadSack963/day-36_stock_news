@@ -1,20 +1,20 @@
 import smtplib
-import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+from email.header import Header
+import os
+from dotenv import load_dotenv
 
 # Encoding email headers
 # https://docs.python.org/3/library/email.header.html
 
-from email.header import Header
-
-
-YAHOO_SENDER = os.environ.get("SMTP_YAHOO_SENDER")
-YAHOO_USERNAME = os.environ.get("SMTP_YAHOO_USERNAME")
-YAHOO_EMAIL = os.environ.get("SMTP_YAHOO_EMAIL")
-YAHOO_PASSWORD = os.environ.get("SMTP_YAHOO_PASSWORD")
-YAHOO_RECIPIENT = os.environ.get("SMTP_YAHOO_RECIPIENT")
+load_dotenv("E:/Python/EnvironmentVariables/.env")
+YAHOO_SENDER = os.getenv("SMTP_YAHOO_SENDER")
+YAHOO_USERNAME = os.getenv("SMTP_YAHOO_USERNAME")
+YAHOO_EMAIL = os.getenv("SMTP_YAHOO_EMAIL")
+YAHOO_PASSWORD = os.getenv("SMTP_YAHOO_PASSWORD")
+YAHOO_RECIPIENT = os.getenv("SMTP_YAHOO_RECIPIENT")
 
 
 def send_mail(header, description):

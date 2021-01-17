@@ -1,9 +1,12 @@
 import requests
-import os
 import save_data
 import json
+import os
+from dotenv import load_dotenv
 
-API_KEY = os.environ.get("APIKey-AlphaVantage")
+
+load_dotenv("E:/Python/EnvironmentVariables/.env")
+API_KEY = os.getenv("APIKey-AlphaVantage")
 
 
 def alpha_vantage_requests(stock):
